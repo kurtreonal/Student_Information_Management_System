@@ -1,0 +1,109 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial;
+}
+
+body {
+    background-image: url("../Assets/landingpagebg.png");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: 0px -40px;
+}
+
+.nav {
+    max-width: 100%;
+    display: flex;
+}
+
+.login-logo{
+    border-radius: 50%;
+    height: auto;
+    margin-top: 15px;
+    display: table;
+    margin-left: 0%;
+}
+
+.nav-logo {
+    height: auto;
+    margin-top: 10px;
+    display: table;
+    margin-left: 2%;
+    margin-right: 30%;
+}
+
+.navigation a {
+    position: relative;
+    font-size: 22px;
+    color: white;
+    text-decoration: none;
+    font-weight: 200;
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
+.navigation a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 3px;
+    background: #FFD700;
+    border-radius: 5px;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform .3s;
+
+}
+
+.navigation a:hover:after {
+    transform: scaleX(1);
+    transform-origin: left;
+
+}
+
+.content {
+    width: 100%;
+    position: absolute;
+    top: 25%;
+    text-align: center;
+    color: #ffffff;
+}
+
+.content h1 {
+  margin-top: 80px;
+  font-size: 3.5em;
+
+}
+
+button {
+  position: relative;
+  width: 15%;
+  padding: 15px;
+  text-align: center;
+  margin: 20px 5px;
+  border-radius: 40px;
+  font-weight: bold;
+  border: 2px solid #ffffff;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+  font-size: 20px;
+}
+
+.btn{
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #FFD700;
+    color: #1b651b;
+}
