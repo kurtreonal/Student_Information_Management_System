@@ -1,15 +1,32 @@
 :root {
     --primary-color: #4a90e2;
+<<<<<<< HEAD
     --bg-color: url("../Assets/Student\ Info\ Page.png");
+=======
+>>>>>>> 5173ead (UI update)
     --text-color: #ffffff;
     --sidebar-bg: rgba(20,118,11, 0.7);
     --sidebar-hover: #e6f0ff;
 }
 body {
+<<<<<<< HEAD
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     background: var(--bg-color);
+=======
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url("../Assets/Student\ Info\ Page.png");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: 0px -40px;
+>>>>>>> 5173ead (UI update)
     color: var(--text-color);
 }
 .sidebar {
