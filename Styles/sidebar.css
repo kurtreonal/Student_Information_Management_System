@@ -1,7 +1,10 @@
 :root {
     --primary-color: #4a90e2;
 <<<<<<< HEAD
+<<<<<<< HEAD
     --bg-color: url("../Assets/Student\ Info\ Page.png");
+=======
+>>>>>>> 5173ead (UI update)
 =======
 >>>>>>> 5173ead (UI update)
     --text-color: #ffffff;
@@ -10,11 +13,14 @@
 }
 body {
 <<<<<<< HEAD
+<<<<<<< HEAD
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
     background: var(--bg-color);
 =======
+=======
+>>>>>>> 5173ead (UI update)
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
@@ -26,6 +32,9 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: 0px -40px;
+<<<<<<< HEAD
+>>>>>>> 5173ead (UI update)
+=======
 >>>>>>> 5173ead (UI update)
     color: var(--text-color);
 }

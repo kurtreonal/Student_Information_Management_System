@@ -2,7 +2,11 @@
   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <title>Modern Sidebar Menu with Internal Toggle</title>
+=======
+    <title>Sidebar</title>
+>>>>>>> 5173ead (UI update)
 =======
     <title>Sidebar</title>
 >>>>>>> 5173ead (UI update)
@@ -24,15 +28,21 @@
     <a href="../Classes/studentinfo.php"><i class="fas fa-user" style="color: #FFD43B;"></i><span>Student</span></a>
     <a href="../Classes/syllabus.php"><i class="fa-solid fa-calendar-days" style="color: #FFD43B;"></i> <span>Syllabus</span></a>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <a href="#"><i class="fa-solid fa-pen" style="color: #FFD43B;"></i><span>Assessment</span></a>
     <a href="#"><i class="fa-solid fa-mug-saucer" style="color: #FFD43B;"></i><span>About</span></a>
     <a href="#"><i class="fa-solid fa-address-book" style="color: #FFD43B;"></i><span>Contact</span></a>
     <a href="#"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #FFD43B;"></i><span>Logout</span></a>
 =======
+=======
+>>>>>>> 5173ead (UI update)
     <a href="../Classes/assessment.php"><i class="fa-solid fa-pen" style="color: #FFD43B;"></i><span>Assessment</span></a>
     <a href="#"><i class="fa-solid fa-mug-saucer" style="color: #FFD43B;"></i><span>About</span></a>
     <a href="#"><i class="fa-solid fa-address-book" style="color: #FFD43B;"></i><span>Contact</span></a>
     <a href="../Classes/add_assessment.php"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #FFD43B;"></i><span>Logout</span></a>
+<<<<<<< HEAD
+>>>>>>> 5173ead (UI update)
+=======
 >>>>>>> 5173ead (UI update)
   </div>
 </body>
