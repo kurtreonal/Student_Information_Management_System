@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Add Assessment</title>
+    <title>Add Syllabus</title>
     <meta name="keywords" content="Student Information Page">
     <meta name="description" content="Stop dwindling, Start by managing your time.">
     <meta name="author" content="Student Info Page Developer/Designer (Pascua)">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../Assets/cvsulogo.png" type="image/x-icon">
-    <link rel="stylesheet" href="../Styles/add_assessment.css">
+    <link rel="stylesheet" href="../Styles/add_syllabus.css">
 </head>
 <body>
-    <?php include "../Classes/sidebar.php"; ?>
+<?php include "../Classes/sidebar.php"; ?>
     <h2 class="move">Welcome
-            Student
+        Student
       </h2>
   <div class="form-container">
-    <h2>Add Assessment</h2>
+    <h2>Add Syllabus</h2>
     <form>
       <div class="form-group">
         <label for="subject">Subject</label>
@@ -24,28 +24,28 @@
           <option value="Math">Math</option>
           <option value="Science">Science</option>
           <option value="English">English</option>
+          <!-- Add more options dynamically as needed -->
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="name">Instructor</label>
+        <input type="text" id="name" name="name" placeholder="e.g., Ms Lorem">
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Day</label>
+        <select id="subject" name="subject">
         </select>
       </div>
 
       <div class="form-group">
-        <label for="type">Assessment Type</label>
-        <select id="type" name="type">
-          <option value="">Select type</option>
-          <option value="Quiz">Quiz</option>
-          <option value="Assignment">Assignment</option>
-          <option value="Project">Project</option>
-          <option value="Exam">Exam</option>
-        </select>
+        <label for="appt">Time In</label>
+        <input type="time" id="apptin" name="apptin">
       </div>
 
       <div class="form-group">
-        <label for="name">Assessment Name</label>
-        <input type="text" id="name" name="name" placeholder="e.g., Midterm Quiz 1">
-      </div>
-
-      <div class="form-group">
-        <label for="score">Score</label>
-        <input type="number" id="score" name="score" placeholder="e.g., 95" min="0" max="100">
+        <label for="appt">Time Out</label>
+        <input type="time" id="apptout" name="apptout">
       </div>
 
       <button type="submit" class="submitBtn">Submit</button>

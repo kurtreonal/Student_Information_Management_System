@@ -16,7 +16,21 @@
       display: inline;
       margin-right: 78%;
     }
-  </style>
+    .submitBtn {
+      padding: 10px 18px;
+      font-size: 15px;
+      background-color: rgba(255, 255, 255, 0.4);
+      color: #1b651b;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .submitBtn:hover {
+      background-color: rgb(255, 193, 7);
+    }
+    </style>
 </head>
 <body>
 <?php  include "../Classes/sidebar.php" ?>
@@ -28,7 +42,7 @@
             Assessment
           </h2>
           <table class='table table-striped table-sm' style="
-            background-color: rgba(255, 255, 255, 0.7) !important;
+            background-color: rgba(255, 255, 255, 0.6) !important;
             border: 1px solid #dadce0 !important;
             border-radius: 8px!important;
            ">
@@ -56,6 +70,7 @@
                 </tr>
             </tbody>
         </table>
+        <button type="submit" class="submitBtn">Add Assessment</button>
     </main>
 </body>
 </html>

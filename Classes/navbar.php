@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>Landing Page</title>
     <meta name="keywords" content="Student Information Landing Page">
     <meta name="description" content="Stop dwindling, Start by managing your time.">
@@ -12,13 +12,13 @@
 </head>
 <body>
     <header class="nav">
-        <a href="./landingpage.php" class="nav-logo"><img class="nav-logo" src="../Assets/cvsulogo.png" alt="Tohsaka Cute Photo" height="45px" width="35%"></a>
+        <a href="../Classes/landingpage.php" class="nav-logo"><img class="nav-logo" src="../Assets/cvsulogo.png" alt="Tohsaka Cute Photo" height="45px" width="35%"></a>
         </div>
             <nav class="navigation" style="margin-top: 45px;margin-right: 3%;">
-                    <a href="./landingpage.php">Home</a>
-                    <a href="./studentinfo.php">Student</a>
-                    <a href="./syllabus.php">Syllabus</a>
-                    <a href="./assessment.php">Assessment</a>
+                    <a href="../Classes/landingpage.php">Home</a>
+                    <a href="../Classes/studentinfo.php">Student</a>
+                    <a href="..//Classes/syllabus.php">Syllabus</a>
+                    <a href="../Classes/assessment.php">Assessment</a>
                     <a href="../Classes/about.php">About</a>
             </nav>
         </div>

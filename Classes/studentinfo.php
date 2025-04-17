@@ -1,3 +1,42 @@
+<?php
+session_start();
+include "../Classes/connection.php";
+
+// Check if user is logged in
+if (!isset($_SESSION['student_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$student_id = $_SESSION['student_id'];
+
+// Fetch student info with section name
+$query = "
+    SELECT s.*, sec.section_name
+    FROM student s
+    JOIN section sec ON s.section_id = sec.section_id
+    WHERE s.student_id = ?
+";
+
+$stmt = $con->prepare($query);
+$stmt->bind_param("i", $student_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$student = $result->fetch_assoc();
+
+if (!$student) {
+    echo "<p>Student not found.</p>";
+    exit();
+}
+
+// Mask email for display
+function maskEmail($email) {
+    $parts = explode('@', $email);
+    $maskedUser = substr($parts[0], 0, 1) . str_repeat('*', strlen($parts[0]) - 1);
+    return $maskedUser . '@' . $parts[1];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,64 +50,64 @@
     <link rel="stylesheet" href="../Styles/studentinfo.css">
 </head>
 <body>
-    <?php  include "../Classes/sidebar.php" ?>
 
-    <div class="personal-info-container">
-  <h1>Your profile info in Student Information Management</h1>
-  <p class="description">
-    Personal info and options to manage it. Info about you and your preferences
-  </p>
-  <div class="border">
-    <h2>Student Basic Information</h2>
-    <div class="info-grid">
-    <div class="info-card">
-            <div class="label">Name</div>
-            <div class="value">
-                Juan Dela Cruz
-                <a href="#" class="edit-link">Edit</a>
+<?php include "../Classes/sidebar.php" ?>
+
+<div class="personal-info-container">
+    <h1>Your profile info in Student Information Management</h1>
+    <p class="description">Personal info and options to manage it. Info about you and your preferences</p>
+    <div class="border">
+        <h2>Student Basic Information</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="label">Name</div>
+                <div class="value">
+                    <?= htmlspecialchars($student['first_name'] . ' ' . $student['middle_name'] . ' ' . $student['last_name']) ?>
+                    <a href="#" class="edit-link">Edit</a>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="label">Student Number</div>
+                <div class="value">
+                    <?= htmlspecialchars($student['student_number']) ?>
+                    <a href="#" class="edit-link">Edit</a>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="label">Section</div>
+                <div class="value">
+                    <?= htmlspecialchars($student['section_name']) ?>
+                    <a href="#" class="edit-link">Edit</a>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="label">Age</div>
+                <div class="value">
+                    <?= htmlspecialchars($student['age']) ?>
+                    <a href="#" class="edit-link">Edit</a>
+                </div>
             </div>
         </div>
-        <div class="info-card">
-            <div class="label">Student Number</div>
-            <div class="value">
-                202311233
-                <a href="#" class="edit-link">Edit</a>
+
+        <h2>Account Information</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="label">Email</div>
+                <div class="value">
+                    <?= htmlspecialchars(maskEmail($student['email'])) ?>
+                    <a href="#" class="edit-link">Edit</a>
+                </div>
             </div>
-        </div>
-        <div class="info-card">
-            <div class="label">Section</div>
-            <div class="value">
-                BSCS 2-3
-                <a href="#" class="edit-link">Edit</a>
-            </div>
-        </div>
-        <div class="info-card">
-            <div class="label">Age</div>
-            <div class="value">
-                20
-                <a href="#" class="edit-link">Edit</a>
+            <div class="info-card">
+                <div class="label">Password</div>
+                <div class="value">
+                    ********
+                    <a href="#" class="edit-link">Edit</a>
+                </div>
             </div>
         </div>
     </div>
-    <h2>Account Information</h2>
-    <div class="info-grid">
-    <div class="info-card">
-            <div class="label">Email</div>
-            <div class="value">
-                k********gmail.com
-                <a href="#" class="edit-link">Edit</a>
-            </div>
-        </div>
-        <div class="info-card">
-            <div class="label">Password</div>
-            <div class="value">
-                ********
-                <a href="#" class="edit-link">Edit</a>
-            </div>
-        </div>
-    </div>
-    <!-- Add more info-cards as needed -->
-  </div>
 </div>
+
 </body>
 </html>

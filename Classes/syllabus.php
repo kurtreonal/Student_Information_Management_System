@@ -8,14 +8,6 @@
     <meta name="author" content="Syllabus Page Developer/Designer (Pascua)">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../Assets/cvsulogo.png" type="image/x-icon">
-<<<<<<< HEAD
-<<<<<<< HEAD
-</head>
-<body>
-    <?php  include "../Classes/sidebar.php" ?>
-=======
-=======
->>>>>>> 5173ead (UI update)
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/4aa19b73e3.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../Styles/syllabus.css">
@@ -24,7 +16,21 @@
       display: inline;
       margin-right: 78%;
     }
-  </style>
+    .submitBtn {
+      padding: 10px 18px;
+      font-size: 15px;
+      background-color: rgba(255, 255, 255, 0.4);
+      color: #1b651b;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .submitBtn:hover {
+      background-color: rgb(255, 193, 7);
+    }
+    </style>
 </head>
 <body>
     <?php  include "../Classes/sidebar.php" ?>
@@ -36,7 +42,7 @@
             Syllabus
           </h2>
           <table class='table table-striped table-sm' style="
-            background-color: rgba(255, 255, 255, 0.7) !important;
+            background-color: rgba(255, 255, 255, 0.6) !important;
             border: 1px solid #dadce0 !important;
             border-radius: 8px!important;
            ">
@@ -52,7 +58,7 @@
             </thead>
             <tbody>
               <tr>
-                  <td>tite</td>
+                  <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -66,9 +72,6 @@
               </tr>
             </tbody>
           </table>
-<<<<<<< HEAD
->>>>>>> 5173ead (UI update)
-=======
->>>>>>> 5173ead (UI update)
+          <button type="submit" class="submitBtn">Add Syllabus</button>
 </body>
 </html>
