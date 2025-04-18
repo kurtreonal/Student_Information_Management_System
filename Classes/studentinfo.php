@@ -25,7 +25,11 @@ $result = $stmt->get_result();
 $student = $result->fetch_assoc();
 
 if (!$student) {
-    echo "<p>Student not found.</p>";
+    echo "<p>Student not found. Please Login First</p>
+    <a href='../Classes/login.php' class='btn btn-outline-warning btn-sm' style='color: #1b651b; margin-right: 10px;'>Login Here</a>
+
+    <p>New Student?</p>
+    <a href='../Classes/registerpage.php' class='btn btn-outline-warning btn-sm' style='color: #1b651b;'>Register Here</a>";
     exit();
 }
 

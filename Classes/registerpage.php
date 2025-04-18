@@ -1,5 +1,18 @@
 <?php
-include '../Classes/connection.php'; // Adjust path as needed
+session_start();
+
+// Check if student is logged in
+if (!isset($_SESSION['student_id'])) {
+    // Redirect to login page if not logged in
+    header("Location: ../login.php");
+    exit();
+}
+
+include "../Classes/connection.php";
+
+// Fetch section ID
+$section_query = "SELECT section_id, section_name FROM section";
+$section_result = $con->query($section_query);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize user inputs
@@ -29,16 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Step 2: Insert student record
-    $stmt = $con->prepare("INSERT INTO student
-        (first_name, middle_name, last_name, student_number, section_id, age, email, password)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssiiiss",
-        $first_name, $middle_name, $last_name,
-        $student_number, $section_id, $age, $email, $password);
+    $stmt = $con->prepare("INSERT INTO student (first_name, middle_name, last_name, student_number, section_id, age, email, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssiiiss", $first_name, $middle_name, $last_name, $student_number, $section_id, $age, $email, $password);
 
     if ($stmt->execute()) {
         echo "✅ Registration successful!";
-        header("Location: login.php");
+        header("Location: login.php"); // Redirect to login page after successful registration
     } else {
         echo "❌ Error: " . $stmt->error;
     }
@@ -53,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> Responsive Registration Form | CodingLab </title>
+  <title>Responsive Registration Form</title>
   <link rel="stylesheet" href="../Styles/registerpage.css">
 </head>
 <body>
@@ -75,27 +84,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <span class="details">Middle Name</span>
             <input type="text" name="middle_name" placeholder="Enter your middlename" required>
           </div>
-          <!-- Input for Email -->
+          <!-- Input for Last Name -->
           <div class="input-box">
             <span class="details">Last Name</span>
             <input type="text" name="last_name" placeholder="Enter your lastname" required>
           </div>
-          <!-- Input for Phone Number -->
+          <!-- Input for Student Number -->
           <div class="input-box">
             <span class="details">Student Number</span>
             <input type="number" name="student_number" placeholder="Enter your student number" required>
           </div>
-                    <!-- Input for Phone Number -->
+          <!-- Input for Section -->
           <div class="input-box">
             <span class="details">Section</span>
             <input type="text" name="section" placeholder="Enter your section" required>
           </div>
-                              <!-- Input for Phone Number -->
+          <!-- Input for Age -->
           <div class="input-box">
             <span class="details">Age</span>
             <input type="number" name="age" placeholder="Enter your age" required>
           </div>
-                              <!-- Input for Phone Number -->
+          <!-- Input for Email -->
           <div class="input-box">
             <span class="details">Email</span>
             <input type="email" name="email" placeholder="Enter your email" required>
@@ -106,6 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="password" name="password" placeholder="Enter your password" required>
           </div>
         </div>
+
         <!-- Submit button -->
         <div class="button">
           <input type="submit" value="Register">
@@ -113,6 +123,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </form>
     </div>
   </div>
-  <h1 class="move">111</h1>
 </body>
 </html>

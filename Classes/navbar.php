@@ -22,7 +22,15 @@
                     <a href="../Classes/about.php">About</a>
             </nav>
         </div>
-        <a href="../Classes/login.php" class="login-logo"><img class="login-logo" src="../Assets/user-logo.png" alt="Tohsaka Cute Photo" height="45px" width="45px"></a>
+        <?php if (isset($_SESSION['student_id'])): ?>
+            <a href="../Classes/logout.php" class="login-logo" title="Logout">
+                <img src="../Assets/user-logo.png" alt="Logout" height="45px" width="45px" style="border-radius: 100%;">
+            </a>
+        <?php else: ?>
+            <a href="../Classes/login.php" class="login-logo" title="Login">
+                <img src="../Assets/user-logo.png" alt="Login" height="45px" width="45px" style="border-radius: 100%;">
+            </a>
+        <?php endif; ?>
     </header>
 </body>
 </html>

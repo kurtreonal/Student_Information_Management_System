@@ -52,8 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<h2>Login Form</h2>
 				<input type="text" placeholder="Email" name="email" required>
 				<input type="password" placeholder="Password" name="password" required>
-				<button type="submit" name="login">LOGIN</button>
+                <button type="submit" name="login">Login</button>
 			</form>
+            <a href="forgotpass.php" class="btn btn-link" style="margin-top: 10px; display: inline-block;">Forgot Password?</a>
+            <a href="registerpage.php" class="btn btn-link" style="display: inline-block;">Register Here</a>
 		</div>
 		<div class="image">
 			<img src="../Assets/cvsulogo.png">
