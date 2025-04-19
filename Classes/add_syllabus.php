@@ -47,7 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt3->execute();
     $stmt3->close();
 
-
     $student_id = $_SESSION['student_id'];
 
     // Link subject to student

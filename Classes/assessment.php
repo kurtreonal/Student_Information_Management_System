@@ -2,8 +2,15 @@
 session_start();
 include "../Classes/connection.php";
 
-// Get student info from DB
-$student_id = $_SESSION['student_id'];
+// Get student info
+$student_id = $_SESSION['student_id'] ?? null;
+if (!$student_id) {
+    echo "<p>Student not found. Please Login First</p>
+    <a href='../Classes/login.php' class='btn btn-outline-warning btn-sm' style='color: #1b651b;'>Login Here</a>";
+    exit();
+}
+
+// Get student details
 $student_query = "SELECT * FROM student WHERE student_id = ?";
 $stmt = $con->prepare($student_query);
 $stmt->bind_param("i", $student_id);
@@ -12,30 +19,19 @@ $result_student = $stmt->get_result();
 $student = $result_student->fetch_assoc();
 $stmt->close();
 
-// Check if student exists in DB
-if (!$student) {
-  echo "<p>Student not found. Please Login First</p>
-  <a href='../Classes/login.php' class='btn btn-outline-warning btn-sm' style='color: #1b651b; margin-right: 10px;'>Login Here</a>
-
-  <p>New Student?</p>
-  <a href='../Classes/registerpage.php' class='btn btn-outline-warning btn-sm' style='color: #1b651b;'>Register Here</a>";
-  exit();
-}
-
-// Fetch all assessments for the student
+// Get assessments (filtering out soft-deleted ones)
 $assessment_query = "
-  SELECT
-      a.assessment_id,
-      sub.subject_name,
-      a.type AS assessment_type,
-      a.assessment_name,
-      r.score AS assessment_score
-  FROM assessment a
-  JOIN subject sub ON a.subject_id = sub.subject_id
-  LEFT JOIN results r ON a.assessment_id = r.assessment_id AND r.student_id = ?
-  WHERE r.student_id = ? OR r.student_id IS NULL
+    SELECT
+        a.assessment_id,
+        sub.subject_name,
+        a.type AS assessment_type,
+        a.assessment_name,
+        r.score AS assessment_score
+    FROM assessment a
+    JOIN subject sub ON a.subject_id = sub.subject_id
+    LEFT JOIN results r ON a.assessment_id = r.assessment_id AND r.student_id = ?
+    WHERE (r.student_id = ? OR r.student_id IS NULL) AND a.is_deleted = 0
 ";
-
 $stmt = $con->prepare($assessment_query);
 $stmt->bind_param("ii", $student_id, $student_id);
 $stmt->execute();

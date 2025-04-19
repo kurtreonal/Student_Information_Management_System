@@ -27,6 +27,7 @@ if (!$student) {
 // Fetch all subject, instructor, day, time_in, time_out
 $query = "
     SELECT
+        s.subject_id,
         s.subject_name,
         s.instructor,
         sch.day_of_week,
@@ -35,6 +36,7 @@ $query = "
     FROM schedulesubject ss
     JOIN subject s ON ss.subject_id = s.subject_id
     JOIN schedule sch ON ss.schedule_id = sch.schedule_id
+    WHERE s.is_deleted = 0 AND sch.is_deleted = 0
 ";
 
 $result = mysqli_query($con, $query);
@@ -92,7 +94,8 @@ $result = mysqli_query($con, $query);
                 </tr>
             </thead>
             <tbody>
-                <?php while ($row = mysqli_fetch_assoc($result)): ?>
+            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                <?php $subject_id = $row['subject_id']; ?>
                 <tr>
                     <td><?php echo htmlspecialchars($row['subject_name']); ?></td>
                     <td><?php echo htmlspecialchars($row['instructor']); ?></td>
@@ -101,7 +104,11 @@ $result = mysqli_query($con, $query);
                     <td><?php echo date("h:i A", strtotime($row['time_out'])); ?></td>
                     <td>
                         <a class='btn btn-outline-warning btn-sm' style='color: #1b651b;'>Update</a>
-                        <a class='btn btn-outline-warning btn-sm' style='color: #1b651b;'>Delete</a>
+                        <a href='delete_syllabus.php?subject_id=<?= $subject_id ?>'
+                        class='btn btn-outline-danger btn-sm'
+                        onclick="return confirm('Are you sure you want to delete this syllabus?');">
+                        Delete
+                        </a>
                     </td>
                 </tr>
                 <?php endwhile; ?>
