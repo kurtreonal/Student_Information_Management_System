@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: transparent;
+    padding: 10px 20px;
+}
+
+.nav-logo {
+    height: auto;
+    width: 35%;
+}
+
+.login-logo {
+    margin-left: 5%;
+}
+
+.navigation {
+    display: flex;
+}
+
+.navigation a {
+    position: relative;
+    font-size: 22px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.navigation a::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    bottom: -6px;
+    left: 0;
+    background-color: #FFD700;
+    visibility: hidden;
+    transition: all 0.4s ease-in-out;
+}
+
+.navigation a:hover {
+    color: #FFD700;
+    transform: scale(1.05);
+}
+
+.navigation a:hover::before {
+    visibility: visible;
+    width: 100%;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .navigation {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 70px;
+        left: 0;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .navigation.active {
+        display: flex;
+    }
+
+    .navigation a {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+
+    .nav-logo {
+        width: 40%;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .login-logo {
+        display: none;
+    }
+}

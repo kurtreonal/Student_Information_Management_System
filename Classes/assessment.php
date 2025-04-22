@@ -2,13 +2,31 @@
 session_start();
 include "../Classes/connection.php";
 
-// Get student info
-$student_id = $_SESSION['student_id'] ?? null;
-if (!$student_id) {
-    echo "<p>Student not found. Please Login First</p>
-    <a href='../Classes/login.php' class='btn btn-outline-warning btn-sm' style='color: #1b651b;'>Login Here</a>";
+// If student is not logged in, redirect to login
+if (!isset($_SESSION['student_id'])) {
+    header("Location: ../Classes/login.php");
     exit();
 }
+
+$student_id = $_SESSION['student_id'];
+
+// Check if student exists in the database
+$student_query = "SELECT * FROM student WHERE student_id = ?";
+$stmt = $con->prepare($student_query);
+$stmt->bind_param("i", $student_id);
+$stmt->execute();
+$result_student = $stmt->get_result();
+$student = $result_student->fetch_assoc();
+$stmt->close();
+
+// If student is not found (deleted or invalid), redirect to login
+if (!$student) {
+    session_destroy(); // Clear invalid session
+    header("Location: ../Classes/login.php");
+    exit();
+}
+?>
+<?php
 
 // Get student details
 $student_query = "SELECT * FROM student WHERE student_id = ?";
@@ -30,13 +48,14 @@ $assessment_query = "
     FROM assessment a
     JOIN subject sub ON a.subject_id = sub.subject_id
     LEFT JOIN results r ON a.assessment_id = r.assessment_id AND r.student_id = ?
-    WHERE (r.student_id = ? OR r.student_id IS NULL) AND a.is_deleted = 0
+    WHERE a.student_id = ? AND a.is_deleted = 0
 ";
-$stmt = $con->prepare($assessment_query);
-$stmt->bind_param("ii", $student_id, $student_id);
-$stmt->execute();
-$assessment_result = $stmt->get_result();
-$stmt->close();
+
+  $stmt = $con->prepare($assessment_query);
+  $stmt->bind_param("ii", $student_id, $student_id);
+  $stmt->execute();
+  $assessment_result = $stmt->get_result();
+  $stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -76,6 +95,7 @@ $stmt->close();
 <body>
 <?php include "../Classes/sidebar.php"; ?>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="margin-left: 20%!important; padding-right: 7% !important;">
+      <?php include "../Classes/assessmentSearch.php"; ?>
         <hr>
         <div class="table-responsive">
           <!-- First table for claimed users -->
@@ -91,20 +111,19 @@ $stmt->close();
                 </tr>
             </thead>
             <tbody>
-                <?php while ($row = $assessment_result->fetch_assoc()): ?>
+            <?php while ($row = mysqli_fetch_assoc($search_result)): ?>
+                <?php $subject_id = $row['assessment_id']; ?>
                 <tr>
                     <td><?php echo htmlspecialchars($row['subject_name']); ?></td>
-                    <td><?php echo htmlspecialchars($row['assessment_type']); ?></td>
+                    <td><?php echo htmlspecialchars($row['type']); ?></td>
                     <td><?php echo htmlspecialchars($row['assessment_name']); ?></td>
-                    <td><?php echo htmlspecialchars($row['assessment_score'] ?? 'Not yet graded'); ?></td>
+                    <td><?= is_null($row['score']) ? 'N/A' : $row['score'] ?></td>
                     <td>
-                        <a href="update_assessment.php?id=<?php echo $row['assessment_id']; ?>" class='btn btn-outline-warning btn-sm' style='color: #1b651b;'>Update</a>
-                        <a href="delete_assessment.php?assessment_id=<?php echo $row['assessment_id']; ?>"
-                          class="btn btn-outline-warning btn-sm"
-                          style="color: #1b651b;"
-                          onclick="return confirm('Are you sure you want to delete this assessment?');">Delete
-                        </a>
-                    </td>
+                      <a href="update_assessment.php?id=<?= $row['assessment_id'] ?>" class='btn btn-outline-warning btn-sm' style='color: #1b651b;'>Update</a>
+                      <a href="delete_assessment.php?assessment_id=<?= $row['assessment_id'] ?>"
+                        class='btn btn-outline-danger btn-sm'
+                        onclick="return confirm('Are you sure you want to delete this assessment?');">Delete</a>
+                  </td>
                 </tr>
                 <?php endwhile; ?>
             </tbody>
@@ -112,5 +131,17 @@ $stmt->close();
         </div>
         <a href="add_assessment.php" class="submitBtn">Add Assessment</a>
     </main>
+
+    <script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('tbody tr');
+
+        rows.forEach(row => {
+            const rowText = row.textContent.toLowerCase();
+            row.style.display = rowText.includes(filter) ? '' : 'none';
+        });
+    });
+    </script>
 </body>
 </html>

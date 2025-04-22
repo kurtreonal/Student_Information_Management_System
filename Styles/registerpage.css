@@ -26,9 +26,9 @@ body {
     margin-left: 2%;
 }
 
-.move{
-    visibility: hidden;
-    max-height: 0;
+.hide{
+  visibility: hidden;
+  margin-bottom: 5%;
 }
 .container {
     max-width: 700px;

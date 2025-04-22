@@ -1,18 +1,15 @@
 <?php
 session_start();
 
-// Check if student is logged in
-if (!isset($_SESSION['student_id'])) {
-    // Redirect to login page if not logged in
-    header("Location: ../login.php");
+if (isset($_SESSION['student_id'])) {
+    header("Location: ../Classes/studentinfo.php");
     exit();
 }
 
 include "../Classes/connection.php";
 
-// Fetch section ID
-$section_query = "SELECT section_id, section_name FROM section";
-$section_result = $con->query($section_query);
+// Enable mysqli exceptions for error handling
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Sanitize user inputs
@@ -25,34 +22,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email          = $_POST['email'];
     $password       = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    // Step 1: Check or insert section
-    $stmt = $con->prepare("SELECT section_id FROM section WHERE section_name = ?");
-    $stmt->bind_param("s", $section_name);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($row = $result->fetch_assoc()) {
-        $section_id = $row['section_id'];
-    } else {
-        // Insert new section
-        $stmt = $con->prepare("INSERT INTO section (section_name) VALUES (?)");
+    try {
+        // Step 1: Check or insert section
+        $stmt = $con->prepare("SELECT section_id FROM section WHERE section_name = ?");
         $stmt->bind_param("s", $section_name);
         $stmt->execute();
-        $section_id = $stmt->insert_id;
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            $section_id = $row['section_id'];
+        } else {
+            $stmt = $con->prepare("INSERT INTO section (section_name) VALUES (?)");
+            $stmt->bind_param("s", $section_name);
+            $stmt->execute();
+            $section_id = $stmt->insert_id;
+        }
+
+        // Step 2: Insert student
+        $stmt = $con->prepare("INSERT INTO student (first_name, middle_name, last_name, student_number, section_id, age, email, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssiiiss", $first_name, $middle_name, $last_name, $student_number, $section_id, $age, $email, $password);
+        $stmt->execute();
+
+        // If successful, redirect
+        echo "<script>alert('Registration successful!'); window.location.href='login.php';</script>";
+
+    } catch (mysqli_sql_exception $e) {
+        // Detect duplicate entry
+        if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
+            if (strpos($e->getMessage(), 'student_number') !== false) {
+                echo "<script>alert('Student number already exists.'); window.location.href='registerpage.php';</script>";
+            } elseif (strpos($e->getMessage(), 'email') !== false) {
+                echo "<script>alert('Email already exists.'); window.location.href='registerpage.php';</script>";
+            } else {
+                echo "<script>alert('Duplicate entry found.'); window.location.href='registerpage.php';</script>";
+            }
+        } else {
+            // Generic error fallback
+            echo "<script>alert('Registration failed: " . $e->getMessage() . "'); window.location.href='registerpage.php';</script>";
+        }
     }
 
-    // Step 2: Insert student record
-    $stmt = $con->prepare("INSERT INTO student (first_name, middle_name, last_name, student_number, section_id, age, email, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssiiiss", $first_name, $middle_name, $last_name, $student_number, $section_id, $age, $email, $password);
-
-    if ($stmt->execute()) {
-        echo "✅ Registration successful!";
-        header("Location: login.php"); // Redirect to login page after successful registration
-    } else {
-        echo "❌ Error: " . $stmt->error;
-    }
-
-    $stmt->close();
     $con->close();
 }
 ?>
@@ -82,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <!-- Input for Username -->
           <div class="input-box">
             <span class="details">Middle Name</span>
-            <input type="text" name="middle_name" placeholder="Enter your middlename" required>
+            <input type="text" name="middle_name" placeholder="Enter your middlename">
           </div>
           <!-- Input for Last Name -->
           <div class="input-box">
@@ -123,5 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </form>
     </div>
   </div>
+  <div class="hide">Tohsaka is actually cute</div>
 </body>
 </html>

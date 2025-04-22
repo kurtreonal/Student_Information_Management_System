@@ -6,3 +6,8 @@ function toggleNav() {
         sidebar.classList.toggle("open");
     }
 }
+
+function toggleMenu() {
+    const navLinks = document.getElementById("navLinks");
+    navLinks.classList.toggle("active");
+}

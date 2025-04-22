@@ -2,9 +2,9 @@
 session_start();
 include "../Classes/connection.php";
 
-// Check if user is logged in
+// If student is not logged in, redirect to login
 if (!isset($_SESSION['student_id'])) {
-    header("Location: login.php");
+    header("Location: ../Classes/login.php");
     exit();
 }
 
@@ -23,13 +23,12 @@ $stmt->bind_param("i", $student_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $student = $result->fetch_assoc();
+$stmt->close();
 
+// If student does not exist, redirect to login
 if (!$student) {
-    echo "<p>Student not found. Please Login First</p>
-    <a href='../Classes/login.php' class='btn btn-outline-warning btn-sm' style='color: #1b651b; margin-right: 10px;'>Login Here</a>
-
-    <p>New Student?</p>
-    <a href='../Classes/registerpage.php' class='btn btn-outline-warning btn-sm' style='color: #1b651b;'>Register Here</a>";
+    session_destroy(); // Clear invalid session
+    header("Location: ../Classes/login.php");
     exit();
 }
 
@@ -67,28 +66,28 @@ function maskEmail($email) {
                 <div class="label">Name</div>
                 <div class="value">
                     <?= htmlspecialchars($student['first_name'] . ' ' . $student['middle_name'] . ' ' . $student['last_name']) ?>
-                    <a href="#" class="edit-link">Edit</a>
+                    <a href="../Classes/update_studentinfo.php" class="edit-link">Edit</a>
                 </div>
             </div>
             <div class="info-card">
                 <div class="label">Student Number</div>
                 <div class="value">
                     <?= htmlspecialchars($student['student_number']) ?>
-                    <a href="#" class="edit-link">Edit</a>
+                    <a href="../Classes/update_studentinfo.php" class="edit-link">Edit</a>
                 </div>
             </div>
             <div class="info-card">
                 <div class="label">Section</div>
                 <div class="value">
                     <?= htmlspecialchars($student['section_name']) ?>
-                    <a href="#" class="edit-link">Edit</a>
+                    <a href="../Classes/update_studentinfo.php" class="edit-link">Edit</a>
                 </div>
             </div>
             <div class="info-card">
                 <div class="label">Age</div>
                 <div class="value">
                     <?= htmlspecialchars($student['age']) ?>
-                    <a href="#" class="edit-link">Edit</a>
+                    <a href="../Classes/update_studentinfo.php" class="edit-link">Edit</a>
                 </div>
             </div>
         </div>
@@ -99,14 +98,14 @@ function maskEmail($email) {
                 <div class="label">Email</div>
                 <div class="value">
                     <?= htmlspecialchars(maskEmail($student['email'])) ?>
-                    <a href="#" class="edit-link">Edit</a>
+                    <a href="../Classes/update_studentinfo.php" class="edit-link">Edit</a>
                 </div>
             </div>
             <div class="info-card">
                 <div class="label">Password</div>
                 <div class="value">
                     ********
-                    <a href="#" class="edit-link">Edit</a>
+                    <a href="../Classes/update_studentinfo.php" class="edit-link">Edit</a>
                 </div>
             </div>
         </div>

@@ -1,5 +1,14 @@
 <?php
 session_start();
+
+// If the student is already logged in, redirect them to their info page
+if (isset($_SESSION['student_id'])) {
+    header("Location: ../Classes/studentinfo.php");
+    exit();
+}
+?>
+
+<?php
 include 'connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -54,8 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<input type="password" placeholder="Password" name="password" required>
                 <button type="submit" name="login">Login</button>
 			</form>
-            <a href="forgotpass.php" class="btn btn-link" style="margin-top: 10px; display: inline-block;">Forgot Password?</a>
-            <a href="registerpage.php" class="btn btn-link" style="display: inline-block;">Register Here</a>
+            <a href="../Classes/forgotpass.php" class="btn btn-link" style="margin-top: 10px; display: inline-block;">Forgot Password?</a>
+            <a href="../Classes/registerpage.php" class="btn btn-link" style="display: inline-block;">Register Here</a>
 		</div>
 		<div class="image">
 			<img src="../Assets/cvsulogo.png">

@@ -107,3 +107,119 @@ button {
     background-color: #FFD700;
     color: #1b651b;
 }
+
+/* Medium Screens (Tablets, Small Laptops) */
+@media (max-width: 1024px) {
+    .navigation a {
+        font-size: 20px;
+        margin-left: 20px;
+    }
+
+    .nav-logo {
+        margin-right: 10%;
+        width: 25%;
+    }
+
+    .content h1 {
+        font-size: 3em;
+    }
+
+    button {
+        width: 25%;
+        font-size: 18px;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    .nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .nav-logo {
+        margin: 10px 0;
+        width: 40%;
+        text-align: center;
+    }
+
+    .navigation {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .navigation a {
+        margin: 10px 0;
+        font-size: 18px;
+    }
+
+    .login-logo {
+        margin-top: 10px;
+    }
+
+    .content h1 {
+        font-size: 20px;
+    }
+
+    button {
+        width: 40%;
+        font-size: 16px;
+    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+    .nav {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+
+    .nav-logo {
+        margin: 10px auto;
+        width: 60%;
+    }
+
+    .navigation a {
+        font-size: 16px;
+        margin: 8px 0;
+    }
+
+    .login-logo img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .content {
+        top: 20%;
+        padding: 0 10px;
+    }
+
+    .content h1 {
+        font-size: 1.8em;
+        margin-top: 60px;
+    }
+
+    button {
+        width: 60%;
+        padding: 12px;
+        font-size: 14px;
+    }
+}
+
+/* Extra Small Devices */
+@media (max-width: 360px) {
+    .content h1 {
+        font-size: 1.6em;
+    }
+
+    button {
+        width: 70%;
+        padding: 10px;
+        font-size: 13px;
+    }
+}

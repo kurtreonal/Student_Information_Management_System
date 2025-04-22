@@ -2,44 +2,52 @@
 session_start();
 include "../Classes/connection.php";
 
-// Get student info from DB
-$student_id = $_SESSION['student_id'];
-$student_query = "SELECT * FROM student WHERE student_id = ?";
-$stmt = $con->prepare($student_query);
-$stmt->bind_param("i", $student_id);
-$stmt->execute();
-$result_student = $stmt->get_result();
-$student = $result_student->fetch_assoc();
-$stmt->close();
+// If student is not logged in, redirect to login
+if (!isset($_SESSION['student_id'])) {
+    header("Location: ../Classes/login.php");
+    exit();
+}
 
-// Check if student exists in DB
+    $student_id = $_SESSION['student_id'];
+
+    // Check if student exists in the database
+    $student_query = "SELECT * FROM student WHERE student_id = ?";
+    $stmt = $con->prepare($student_query);
+    $stmt->bind_param("i", $student_id);
+    $stmt->execute();
+    $result_student = $stmt->get_result();
+    $student = $result_student->fetch_assoc();
+    $stmt->close();
+
+// If student is not found (deleted or invalid), redirect to login
 if (!$student) {
-  echo "<p>Student not found. Please Login First</p>
-  <a href='../Classes/login.php' class='btn btn-outline-warning btn-sm' style='color: #1b651b; margin-right: 10px;'>Login Here</a>
-
-  <p>New Student?</p>
-  <a href='../Classes/registerpage.php' class='btn btn-outline-warning btn-sm' style='color: #1b651b;'>Register Here</a>";
-  exit();
+    session_destroy(); // Clear invalid session
+    header("Location: ../Classes/login.php");
+    exit();
 }
 ?>
 <?php
 
-// Fetch all subject, instructor, day, time_in, time_out
-$query = "
-    SELECT
-        s.subject_id,
-        s.subject_name,
-        s.instructor,
-        sch.day_of_week,
-        sch.time_in,
-        sch.time_out
-    FROM schedulesubject ss
-    JOIN subject s ON ss.subject_id = s.subject_id
-    JOIN schedule sch ON ss.schedule_id = sch.schedule_id
-    WHERE s.is_deleted = 0 AND sch.is_deleted = 0
-";
+    $query = "
+        SELECT
+            s.subject_id,
+            s.subject_name,
+            s.instructor,
+            sch.day_of_week,
+            sch.time_in,
+            sch.time_out
+        FROM schedulesubject ss
+        JOIN subject s ON ss.subject_id = s.subject_id
+        JOIN schedule sch ON ss.schedule_id = sch.schedule_id
+        WHERE s.is_deleted = 0
+        AND sch.is_deleted = 0
+        AND s.student_id = ?
+    ";
 
-$result = mysqli_query($con, $query);
+    $stmt = $con->prepare($query);
+    $stmt->bind_param("i", $student_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -79,6 +87,8 @@ $result = mysqli_query($con, $query);
 <?php include "../Classes/sidebar.php"; ?>
 
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="margin-left: 20%!important; padding-right: 7% !important;">
+    <?php $mode = "syllabus";
+    include "../Classes/search.php";?>
     <hr>
     <div class="table-responsive">
         <h2>Welcome to Syllabus</h2>
@@ -94,7 +104,7 @@ $result = mysqli_query($con, $query);
                 </tr>
             </thead>
             <tbody>
-            <?php while ($row = mysqli_fetch_assoc($result)): ?>
+            <?php while ($row = mysqli_fetch_assoc($search_result)): ?>
                 <?php $subject_id = $row['subject_id']; ?>
                 <tr>
                     <td><?php echo htmlspecialchars($row['subject_name']); ?></td>
@@ -103,7 +113,7 @@ $result = mysqli_query($con, $query);
                     <td><?php echo date("h:i A", strtotime($row['time_in'])); ?></td>
                     <td><?php echo date("h:i A", strtotime($row['time_out'])); ?></td>
                     <td>
-                        <a class='btn btn-outline-warning btn-sm' style='color: #1b651b;'>Update</a>
+                        <a href='update_syllabus.php?subject_id=<?= $subject_id ?>' class='btn btn-outline-warning btn-sm' style='color: #1b651b;'>Update</a>
                         <a href='delete_syllabus.php?subject_id=<?= $subject_id ?>'
                         class='btn btn-outline-danger btn-sm'
                         onclick="return confirm('Are you sure you want to delete this syllabus?');">
@@ -117,5 +127,17 @@ $result = mysqli_query($con, $query);
     </div>
     <a href="add_syllabus.php" class="submitBtn">Add Syllabus</a>
 </main>
+
+<script>
+document.getElementById('searchInput').addEventListener('keyup', function () {
+    const filter = this.value.toLowerCase();
+    const rows = document.querySelectorAll('tbody tr');
+
+    rows.forEach(row => {
+        const rowText = row.textContent.toLowerCase();
+        row.style.display = rowText.includes(filter) ? '' : 'none';
+    });
+});
+</script>
 </body>
 </html>
