@@ -15,7 +15,7 @@
     <div class="content">
         <h1>AVOID DWINDLING <br> START BY MANAGING YOUR TIME</h1>
         <div>
-            <a href="btn">
+            <a href="../Classes/studentinfo.php">
                 <button class="btn">GET STARTED</button>
             </a>
         </div>
